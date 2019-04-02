@@ -39,10 +39,10 @@ async def pub_tree(loop:AbstractEventLoop, root:Channel):
         await root.pub("signal", "message from root channel")
         await aio.sleep(2)
         print ("pub lev1")
-        await root.get_or_create_ch("/lev1").pub("signal", "message from channel lev1")
+        await root.get_or_create_sub_ch("/lev1").pub("signal", "message from channel lev1")
         await aio.sleep(2)
         print ("pub lev2")
-        await root.get_or_create_ch("/lev1/lev2").pub("signal, message from channel lev2")
+        await root.get_or_create_sub_ch("/lev1/lev2").pub("signal", "message from channel lev2")
 
 
 async def main(loop):
@@ -53,9 +53,9 @@ async def main(loop):
 
     root = Channel(loop)
     print("root: {}".format(root.get_ch_name()))
-    lev2 = root.get_or_create_ch("/lev1/lev2")
+    lev2 = root.get_or_create_sub_ch("/lev1/lev2")
     print("lev2: {}".format(lev2.get_ch_name()))
-    lev1 = root.get_chan("/lev1")
+    lev1 = root.get_sub_ch("/lev1")
     print("lev1: {}".format(lev1.get_ch_name()))
     await lev1.sub("signal", lev1_handle)
     await lev2.sub("signal", lev2_handle)
