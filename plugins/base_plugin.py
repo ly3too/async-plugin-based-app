@@ -3,7 +3,9 @@ from adispatch.channel import Channel
 import asyncio as aio
 from asyncio.events import AbstractEventLoop
 
+
 class ConfigLoader:
+    """ publish config message """
     def __init__(self, loop:AbstractEventLoop, ch: Channel, logger: logging.Logger, *args, **kwargs):
         self._loop = loop
         self._ch = ch

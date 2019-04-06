@@ -4,7 +4,14 @@ from adispatch.channel import Channel
 import logging
 from asyncio.events import AbstractEventLoop
 
+
 class MainLoop:
+    """
+        A simple plugin based application
+
+        call setup for each plugins. setup must return an app instance.
+        and run all app in an event loop
+    """
     def __init__(self, loop: AbstractEventLoop):
         # init event loop and dispatcher
         self._loop = loop
