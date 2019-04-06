@@ -3,6 +3,13 @@ import asyncio as aio
 
 
 class Channel:
+    """
+        provide channel based asynchronous pub-sub
+
+        channels are in a tree like structure. sub channels can receive all message from parent channel,
+        but not the opposite
+    """
+
     def __init__(self, loop, parent_chan=None, ch_name = "/"):
         if not isinstance(ch_name, str) or (parent_chan != None and (len(ch_name) == 0 or ch_name[0] == "/")) or \
         (parent_chan == None and ch_name[0:1] != "/"):
@@ -34,6 +41,7 @@ class Channel:
         for k,ch in self._sub_chan:
             ch.pub_threadsafe(signal, message, sender)
 
+    # get a sub channel, something like "/lev1/lev2"
     def get_sub_ch(self, ch_name: str, create=False):
         ch_name = ch_name.strip("/")
         if len(ch_name) == 0 or self._ch_name == ch_name:
@@ -49,6 +57,7 @@ class Channel:
             self._sub_chan[cur_ch] = Channel(self._loop, self, cur_ch)
         return self._sub_chan[cur_ch].get_sub_ch(ch_name[idx + 1:], create)
 
+    # get or create a sub channel
     def get_or_create_sub_ch(self, ch_name: str):
         return self.get_sub_ch(ch_name, create=True)
 

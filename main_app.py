@@ -34,6 +34,7 @@ class MainLoop:
     async def exit(self):
         self._loop.close()
 
+    # run all plugins
     def run(self):
         self._loger.debug("plugins: {}".format(self._plugins))
         try:

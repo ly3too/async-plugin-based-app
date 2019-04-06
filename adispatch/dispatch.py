@@ -1,7 +1,15 @@
 import asyncio as aio
 from asyncio.events import AbstractEventLoop
 
+
 class Dispatcher:
+    """
+        provide async pub-sub functionality
+
+        any callback will be put into event loop, if subbed signal is fired
+        callback must have a interface like cb(loop, signal, message, sender)
+    """
+
     def __init__(self, loop: AbstractEventLoop):
         self._loop = loop
         self._cbs = dict()
